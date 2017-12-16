@@ -1,9 +1,7 @@
 from flask import Flask
 
 
-app = Flask(__name__)
+def create_app():
+    app = Flask(__name__)
 
-
-@app.route('/')
-def hello():
-    return '<h1>Flask 快速示例<h1>'
+    return app
