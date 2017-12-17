@@ -9,4 +9,9 @@ def home():
     return render_template("home.html")
 
 
+@app.route('/base/')
+def basepage():
+    return render_template("basepage.html")
+
+
 app.run()
