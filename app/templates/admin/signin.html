@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+
+<!-- 自身 css 文件 -->
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='sign.css') }}">
+<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+{% endblock %}
+
+<!-- 自身 title -->
+{% block title %}
+<title>登录</title>
+{% endblock %}
+
+<!-- 自身 body -->
+{% block body %}
+<div class="jumbotron" id="top">
+    <div class="container text-center">
+        <blockquote cite="" class="blockquote">
+            <p>持续不断的学习，是最好的成长</p>
+            <footer class="blockquote-footer">TyouSF</footer>
+        </blockquote>
+    </div>
+</div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-3">
+
+            {% block form %}
+            <!-- 登录表单 start -->
+            <form action="{{ url_for('master.sign_in') }}" method="post">
+                <div class="form-group row">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">
+                              <i class="fa fa-user fa-fw"></i>
+                          </span>
+                      </div>
+                      <input type="text" class="form-control" name="username" id="username" placeholder="请输入帐号">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                          <span class="input-group-text">
+                              <i class="fa fa-lock fa-fw"></i>
+                          </span>
+                      </div>
+                      <input type="password" class="form-control" name="password" id="password" placeholder="请输入密码">
+                    </div>
+                </div>
+                <!-- 错误消息展示 start -->
+                {% for msg in get_flashed_messages() %}
+                    <div class="alert alert-danger">
+                        {{ msg }}
+                    </div>
+                {% endfor %}
+                <!-- 错误消息展示 end -->
+                <div class="form-group row justify-content-center">
+                    <input type="submit" class="btn btn-primary btn-block" value="登录">
+                    <a href="{{ url_for('master.sign_up') }}" class="btn btn-secondary btn-block">注册</a>
+                </div>
+            </form>
+            <!-- 登录表单 end -->
+            {% endblock %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}

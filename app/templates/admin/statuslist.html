@@ -1,0 +1,60 @@
+{% extends "admin/home.html" %}
+
+<!--  -->
+{% block content %}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('master.issue_status_lists') }}">问题状态</a></li>
+            <li class="breadcrumb-item active">管理</li>
+        </ol>
+        <!-- Example DataTables Card-->
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-list"></i> 状态列表
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>序号</th>
+                                <th>状态名称</th>
+                                <th>状态说明</th>
+                                <th>创建时间</th>
+                                <th>编辑时间</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>序号</th>
+                                <th>状态名称</th>
+                                <th>状态说明</th>
+                                <th>创建时间</th>
+                                <th>编辑时间</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% if not status_lists %}
+                            <tr>
+                                <td>暂无数据</td>
+                            </tr>
+                            {% else %} {% for status in status_lists %}
+                            <tr>
+                                <td>{{ loop.index }}</td>
+                                <td>{{ status.status }}</td>
+                                <td>{{ status.remark }}</td>
+                                <td>{{ status.createdtime }}</td>
+                                <td>{{ status.editedtime if status.editedtime else "未更改过" }}</td>
+                            </tr>
+                            {% endfor %} {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer small text-muted">已有问题状态列表</div>
+    </div>
+</div>
+{% endblock %}

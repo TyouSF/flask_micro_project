@@ -1,0 +1,38 @@
+{% extends "admin/home.html" %}
+
+
+<!-- .. -->
+{% block content %}
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('master.issue_status') }}">问题状态</a></li>
+            <li class="breadcrumb-item active">编辑</li>
+        </ol>
+        <div class="card mb-3">
+            <div class="card-header">
+                <i class="fa fa-bug"></i> 问题状态
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('master.issue_status') }}" method="post">
+                    <fieldset class="form-group">
+                        <label for="status" class="text-danger">* 状态名</label>
+                        <input type="text" class="form-control" id="status" name="status" placeholder="状态名">
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <label for="remark" class="text-danger">* 说明</label>
+                        <input type="text" class="form-control" id="remark" name="remark" placeholder="关于状态的备注说明">
+                    </fieldset>
+                    <button type="submit" class="btn btn-primary">添加</button>
+                </form>
+                {% for msg in get_flashed_messages() %}
+                <p class="{{ 'text-danger' if msg!='添加成功' else 'text-success' }}">{{ msg }}</p>
+                {% endfor %}
+            </div>
+            <div class="card-footer">
+                <p>在此增加问题状态</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
