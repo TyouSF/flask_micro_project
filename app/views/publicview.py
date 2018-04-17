@@ -9,12 +9,22 @@ from werkzeug.utils import secure_filename  # 校验图片名
 public_view = Blueprint('public_view', __name__)
 
 
-# 存储图片方法
-def save_img(imgfile):
+# 重命名图片名：以时间戳命名
+def new_imgfile_name(imgfile):
+    if '.' in secure_filename(imgfile.filename):
+        extension = secure_filename(imgfile.filename).rsplit('.', 1)[1]
+    else:
+        extension = secure_filename(imgfile.filename)
+    new_filename = str(datetime.now().timestamp()) + '.' + extension
+    return new_filename
+
+
+# 保存图片方法
+def save_img(imgfile, filename):
     if not os.path.exists(current_app.config['IMG_SAVED_PATH']):
         os.mkdir(current_app.config['IMG_SAVED_PATH'])
-    imgfile.filename = datetime.timestamp(datetime.now())
-    return imgfile.filename
+    imgfile.save(os.path.join(current_app.config['IMG_SAVED_PATH'], filename))
+    return True
 
 
 # 校验图片格式方法
@@ -35,22 +45,30 @@ def issue_submit():
         contact = request.form.get('contact', None)
         statusid = 1    # 新提交问题，默认状态均为 1 Open
         createdtime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        imgurl = False  # 未添加图片是，图片路径默认 Fasle
         if 'imgfile' in request.files:
             imgfile = request.files['imgfile']
-            filename = secure_filename(imgfile.filename)
-            if imgfile and allowed_img(imgfile.filename):
-                flash('图片格式正确')
+            if imgfile.filename == '':
+                flash('未正确选择图片')
                 return redirect(url_for('public_view.issue_submit'))
+            if imgfile and allowed_img(filename=imgfile.filename):
+                imgurl = new_filename = new_imgfile_name(imgfile)
             else:
-                imgfile.name = save_img(imgfile)
-                flash(imgfile.filename)
+                flash('图片格式不符')
                 return redirect(url_for('public_view.issue_submit'))
         if not (title and intro and customer and contact):
             flash('请填写所有必填项')
             return redirect(url_for('public_view.issue_submit'))
-        r = insert_db("insert into Issues(title, intro, customer, contact, statusid, createdtime) values (?,?,?,?,?,?)",
-                      (title, intro, customer, contact, statusid, createdtime)
-                      )
+        if imgurl:
+            r = insert_db("insert into Issues(title, intro, customer, contact, statusid, imgurl, createdtime) values (?,?,?,?,?,?,?)",
+                          (title, intro, customer, contact,
+                           statusid, imgurl, createdtime)
+                          )
+            save_img(imgfile=imgfile, filename=new_filename)
+        else:
+            r = insert_db("insert into Issues(title, intro, customer, contact, statusid, createdtime) values (?,?,?,?,?,?)",
+                          (title, intro, customer, contact, statusid, createdtime)
+                          )
         if not r:
             flash('出了点小状况，提交失败，请重试')
             return redirect(url_for('public_view.issue_submit'))

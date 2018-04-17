@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+<!-- .. -->
+{% block title %}
+<title>问题详细</title>
+{% endblock %}
+
+<!-- .. -->
+{% block body %}
+<div class="container" style="margin-top:20px;">
+    <form action="" enctype="multipart/form-data">
+        <div class="page-header text-center text-muted">
+            <h1>问题详细</h1>
+            {% for msg in get_flashed_messages() %}
+                <h6 class="{{ 'text-success' if issueinfo['replied']==1 else 'text-danger' }}">{{ msg }}</h6>
+            {% endfor %}
+        </div>
+        <fieldset class="form-group">
+            <label for="title">问题标题</label>
+            <input type="text" readonly=true class="form-control" id="title" name="title" placeholder="{{ issueinfo['title'] }}">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="intro">相关描述</label>
+            <textarea class="form-control" readonly=true name="intro" id="intro" rows="3" placeholder="{{ issueinfo.intro }}"></textarea>
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="customer">提交人</label>
+            <input type="text" readonly=true class="form-control" id="customer" name="customer" placeholder="{{ issueinfo.customer }}">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="contact">联系方式</label>
+            <input type="text" readonly=1 class="form-control" id="contact" name="contact" placeholder="{{ issueinfo['contact'] }}">
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="img">相关图片</label>
+            <div class="container">
+                {% if issueinfo['imgurl'] %}
+                    <img src="{{ url_for('master.render_img', filename=issueinfo['imgurl']) }}" alt="" class="img-thumbnail">
+                {% else %}
+                    <span class="text-muted" id="img">未上传图片</span>
+                {% endif %}
+            </div>
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="statusid">状态</label>
+            <select class="form-control col-2" id="statusid" name="statusid" readonly=1>
+                <option value="0" selected=true>{{ issueinfo['status'] }} {{ issueinfo['sremark'] }}</option>
+            </select>
+        </fieldset>
+        <footer>
+            <p class="text-muted"><span class="text-danger">*</span> 以上为用户提交该问题的相关信息</p>
+        </footer>
+        {% if issueinfo['replied'] %}
+        <fieldset class="form-group">
+            <label for="reply"><span class="text-danger">*</span> 批复结果</label>
+            <textarea class="form-control" readonly=1 name="reply" id="reply" rows="3" placeholder="{{ issueinfo['reply'] }}"></textarea>
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="remark"><span class="text-danger">*</span> 备注 / 补充说明</label>
+            <textarea class="form-control" readonly=1 name="remark" id="remark" rows="3" placeholder="{{ issueinfo['remark'] }}"></textarea>
+        </fieldset>
+        <fieldset class="form-group">
+            <label for="replier"><span class="text-danger">*</span> 签名</label>
+            <input type="text" readonly=1 class="form-control" id="replier" name="replier" placeholder="{{ issueinfo['replier'] }}">
+        </fieldset>
+        <footer>
+            <div class="form-group">
+                <span class="badge badge-info">
+                    上次批复于：{{ issueinfo['replytime'] }}
+                </span>
+            </div>
+        </footer>
+        {% else %}
+        <a href="{{ url_for('master.reply_issue_info', id=issueinfo['id']) }}" class="btn btn-primary">去批复</a>
+        {% endif %}
+        <a href="{{ url_for('master.admin_home') }}" class="btn btn-primary">返回列表</a>
+    </form>
+</div>
+{% endblock %}

@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>后台首页</title>
+    <title>问题后台管理</title>
     <!-- Bootstrap core CSS-->
     <link href="{{ url_for('static', filename='admin/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     <!-- Custom fonts for this template-->
@@ -123,7 +123,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                                 <tr>
                                     <th>序号</th>
@@ -132,6 +132,8 @@
                                     <th>联系方式</th>
                                     <th>问题状态</th>
                                     <th>提交时间</th>
+                                    <th>批复状态</th>
+                                    <th>操作</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -142,6 +144,8 @@
                                     <th>联系方式</th>
                                     <th>问题状态</th>
                                     <th>提交时间</th>
+                                    <th>批复状态</th>
+                                    <th>操作</th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -157,6 +161,19 @@
                                     <td>{{ issue.contact }}</td>
                                     <td>{{ issue.status }}</td>
                                     <td>{{ issue.createdtime }}</td>
+                                    <td>
+                                        {% if not issue.replied %}
+                                        <span class="text-danger">未批复</span>
+                                        <li class="fa fa-fw fa-times text-danger"></li>
+                                        {% else %}
+                                        <span class="text-success">已批复</span>
+                                        <li class="fa fa-fw fa-check text-success"></li>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <a href="{{ url_for('master.check_issue_info', id=issue.id) }}" title="详细"><i class="fa fa-fw fa-info-circle btn btn-default"></i></a>
+                                        <a href="{{ url_for('master.reply_issue_info', id=issue.id) }}" title="批复"><i class="fa fa-fw fa-reply btn btn-default"></i></a>
+                                    </td>
                                 </tr>
                                 {% endfor %} {% endif %}
                             </tbody>

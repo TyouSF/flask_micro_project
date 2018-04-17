@@ -49,7 +49,7 @@ def query_db(query, args=(), one=False):
 
 def insert_db(insert, args=()):
     '''
-    封装通用查询方法
+    封装通用插入数据方法
 
     @insert: 插入sql语句
     @args: 参数
@@ -57,6 +57,23 @@ def insert_db(insert, args=()):
     db = get_db()
     try:
         db.execute(insert, args)
+    except:
+        return False
+    db.commit()
+    db.close()
+    return True
+
+
+def update_db(update, args=()):
+    '''
+    封装通用更新数据方法
+
+    @update: 更新语句
+    @args: 参数
+    '''
+    db = get_db()
+    try:
+        db.execute(update, args)
     except:
         return False
     db.commit()
