@@ -45,7 +45,7 @@
 ## 项目目录
 
 ```
-    flask_review
+    flask_micro_project
     +--README.md             说明文档
     +--docs/
     |   +--nowversion.md     当前版本使用简要
@@ -69,9 +69,9 @@
 
 ## 如何运行项目
 
-1.  拷贝本项目到本地：`git clone git@github.com:TyouSF/flask_review.git`
+1.  拷贝本项目到本地：`git clone git@github.com:TyouSF/flask_micro_project.git`
 2.  激活本地 python3 以上版本的 虚拟环境，并确保已安装 `flask` 包，如需安装，可运行命令： `pip install flask`
-3.  进入项目的 app 目录下： `cd flask_review/app`
+3.  进入项目的 app 目录下： `cd flask_micro_project/app`
 4.  启动项目服务： `python app.py`
 5.  项目相关访问地址链接:
     - http://127.0.0.1:5000/admin/signin/         (登录页)
