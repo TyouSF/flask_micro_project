@@ -18,7 +18,7 @@ def init_db():
     数据库初始化
     '''
     db = get_db()
-    with open('db.sql', mode='r') as f:
+    with open('db.sql', mode='r', encoding='utf8') as f:
         db.cursor().executescript(f.read())
     db.commit
     db.close()
